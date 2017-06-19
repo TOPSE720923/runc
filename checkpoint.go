@@ -4,13 +4,15 @@ package main
 
 import (
 	"fmt"
-	"strconv"
-	"strings"
-	"syscall"
-
 	"github.com/opencontainers/runc/libcontainer"
 	"github.com/opencontainers/runtime-spec/specs-go"
 	"github.com/urfave/cli"
+	"os"
+	"os/signal"
+	"strconv"
+	"strings"
+	"sync"
+	"syscall"
 )
 
 var checkpointCommand = cli.Command{
