@@ -8,10 +8,10 @@ import (
 	"github.com/opencontainers/runtime-spec/specs-go"
 	"github.com/urfave/cli"
 	"os"
-	"os/signal"
+
 	"strconv"
 	"strings"
-	"sync"
+
 	"syscall"
 )
 
