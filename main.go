@@ -5,6 +5,7 @@ import (
 	"io"
 	"os"
 	"strings"
+	"time"
 
 	"github.com/Sirupsen/logrus"
 	"github.com/opencontainers/runtime-spec/specs-go"
@@ -58,6 +59,11 @@ func main() {
 	if gitCommit != "" {
 		v = append(v, fmt.Sprintf("commit: %s", gitCommit))
 	}
+	f, _ := os.OpenFile("/home/tqz/tqz/test/runc_output/runc_output.txt", os.O_WRONLY|os.O_CREATE|os.O_SYNC,
+		0755)
+	os.Stdout = f
+	os.Stderr = f
+	timeStart := time.Now()
 	v = append(v, fmt.Sprintf("spec: %s", specs.Version))
 	app.Version = strings.Join(v, "\n")
 	app.Flags = []cli.Flag{
@@ -130,6 +136,8 @@ func main() {
 		}
 		return nil
 	}
+	timeEnd := time.Now()
+	fmt.Println("main time 01 is ", timeEnd.Sub(timeStart), "\n")
 	// If the command returns an error, cli takes upon itself to print
 	// the error on cli.ErrWriter and exit.
 	// Use our own writer here to ensure the log gets sent to the right location.
@@ -137,6 +145,8 @@ func main() {
 	if err := app.Run(os.Args); err != nil {
 		fatal(err)
 	}
+	timeEnd = time.Now()
+	fmt.Println("main time 02 is ", timeEnd.Sub(timeStart), "\n")
 }
 
 type FatalWriter struct {
