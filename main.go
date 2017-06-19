@@ -59,10 +59,10 @@ func main() {
 	if gitCommit != "" {
 		v = append(v, fmt.Sprintf("commit: %s", gitCommit))
 	}
-	f, _ := os.OpenFile("/home/tqz/tqz/test/runc_output/runc_output.txt", os.O_WRONLY|os.O_CREATE|os.O_SYNC,
-		0755)
-	os.Stdout = f
-	os.Stderr = f
+	// f, _ := os.OpenFile("/home/tqz/tqz/test/runc_output/runc_output.txt", os.O_WRONLY|os.O_CREATE|os.O_SYNC,
+	// 	0755)
+	// os.Stdout = f
+	// os.Stderr = f
 	timeStart := time.Now()
 	v = append(v, fmt.Sprintf("spec: %s", specs.Version))
 	app.Version = strings.Join(v, "\n")
