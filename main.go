@@ -2,14 +2,14 @@ package main
 
 import (
 	"fmt"
-	"io"
-	"os"
-	"strings"
-	"time"
-
 	"github.com/Sirupsen/logrus"
 	"github.com/opencontainers/runtime-spec/specs-go"
 	"github.com/urfave/cli"
+	"io"
+	"os"
+	"strings"
+	"syscall"
+	"time"
 )
 
 // version will be populated by the Makefile, read from
@@ -48,6 +48,7 @@ value for "bundle" is the current directory.`
 )
 
 func main() {
+	timeStart := time.Now()
 	app := cli.NewApp()
 	app.Name = "runc"
 	app.Usage = usage
@@ -59,11 +60,11 @@ func main() {
 	if gitCommit != "" {
 		v = append(v, fmt.Sprintf("commit: %s", gitCommit))
 	}
-	// f, _ := os.OpenFile("/home/tqz/tqz/test/runc_output/runc_output.txt", os.O_WRONLY|os.O_CREATE|os.O_SYNC,
-	// 	0755)
-	// os.Stdout = f
-	// os.Stderr = f
-	timeStart := time.Now()
+	f, _ := os.OpenFile("/home/tqz/tqz/test/runc_output/runc_output.txt", os.O_WRONLY|os.O_CREATE|os.O_SYNC,
+		0755)
+	os.Stdout = f
+	os.Stderr = f
+
 	v = append(v, fmt.Sprintf("spec: %s", specs.Version))
 	app.Version = strings.Join(v, "\n")
 	app.Flags = []cli.Flag{
