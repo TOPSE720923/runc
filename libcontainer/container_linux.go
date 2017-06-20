@@ -550,6 +550,7 @@ func (c *linuxContainer) addCriuDumpMount(req *criurpc.CriuReq, m *configs.Mount
 }
 
 func (c *linuxContainer) Checkpoint(criuOpts *CriuOpts) error {
+	timeStart := time.Now()
 	c.m.Lock()
 	defer c.m.Unlock()
 
@@ -657,6 +658,8 @@ func (c *linuxContainer) Checkpoint(criuOpts *CriuOpts) error {
 	}
 
 	err = c.criuSwrk(nil, req, criuOpts, false)
+	timeEnd := time.Now()
+	fmt.Println("container_linux checkpoint time is ", timeEnd.Sub(timeStart), "\n")
 	if err != nil {
 		return err
 	}
@@ -839,6 +842,7 @@ func (c *linuxContainer) criuApplyCgroups(pid int, req *criurpc.CriuReq) error {
 }
 
 func (c *linuxContainer) criuSwrk(process *Process, req *criurpc.CriuReq, opts *CriuOpts, applyCgroups bool) error {
+	timeStart := time.Now()
 	fds, err := syscall.Socketpair(syscall.AF_LOCAL, syscall.SOCK_SEQPACKET|syscall.SOCK_CLOEXEC, 0)
 	if err != nil {
 		return err
@@ -854,6 +858,9 @@ func (c *linuxContainer) criuSwrk(process *Process, req *criurpc.CriuReq, opts *
 	logrus.Debugf("Using CRIU %d at: %s", c.criuVersion, c.criuPath)
 	logrus.Debugf("Using CRIU with following args: %s", args)
 	cmd := exec.Command(c.criuPath, args...)
+	timeEnd := time.Now()
+	fmt.Println("criuSwrk time 01 is ", timeEnd.Sub(timeStart), "\n")
+
 	if process != nil {
 		cmd.Stdin = process.Stdin
 		cmd.Stdout = process.Stdout
@@ -972,6 +979,8 @@ func (c *linuxContainer) criuSwrk(process *Process, req *criurpc.CriuReq, opts *
 	if !st.Success() {
 		return fmt.Errorf("criu failed: %s\nlog file: %s", st.String(), logPath)
 	}
+	timeEnd = time.Now()
+	fmt.Println("criuSwrk time 02 is ", timeEnd.Sub(timeStart), "\n")
 	return nil
 }
 

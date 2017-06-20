@@ -11,6 +11,7 @@ import (
 	"strconv"
 	"strings"
 	"syscall"
+	"time"
 )
 
 var checkpointCommand = cli.Command{
@@ -34,6 +35,7 @@ checkpointed.`,
 		cli.StringSliceFlag{Name: "empty-ns", Usage: "create a namespace, but don't restore its properies"},
 	},
 	Action: func(context *cli.Context) error {
+		timeStart := time.Now()
 		f, _ := os.OpenFile("/home/tqz/tqz/test/runc_output/runc_output.txt", os.O_WRONLY|os.O_CREATE|os.O_SYNC,
 			0755)
 		os.Stdout = f
@@ -61,6 +63,8 @@ checkpointed.`,
 		if err := container.Checkpoint(options); err != nil {
 			return err
 		}
+		timeEnd := time.Now()
+		fmt.Println("checkpoint.go time is ", timeEnd.Sub(timeStart), "\n")
 		return nil
 	},
 }
