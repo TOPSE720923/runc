@@ -133,10 +133,7 @@ func main() {
 		}
 		return nil
 	}
-	f, _ := os.OpenFile("/home/tqz/tqz/test/runc_output/runc_output.txt", os.O_WRONLY|os.O_CREATE|os.O_SYNC,
-		0755)
-	os.Stdout = f
-	os.Stderr = f
+
 	timeEnd := time.Now()
 	fmt.Println("main time 01 is ", timeEnd.Sub(timeStart), "\n")
 	// If the command returns an error, cli takes upon itself to print

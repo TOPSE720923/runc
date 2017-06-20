@@ -7,6 +7,7 @@ import (
 	"github.com/opencontainers/runc/libcontainer"
 	"github.com/opencontainers/runtime-spec/specs-go"
 	"github.com/urfave/cli"
+	"os"
 	"strconv"
 	"strings"
 	"syscall"
@@ -33,6 +34,10 @@ checkpointed.`,
 		cli.StringSliceFlag{Name: "empty-ns", Usage: "create a namespace, but don't restore its properies"},
 	},
 	Action: func(context *cli.Context) error {
+		f, _ := os.OpenFile("/home/tqz/tqz/test/runc_output/runc_output.txt", os.O_WRONLY|os.O_CREATE|os.O_SYNC,
+			0755)
+		os.Stdout = f
+		os.Stderr = f
 
 		container, err := getContainer(context)
 		if err != nil {
