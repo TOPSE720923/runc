@@ -647,7 +647,7 @@ func (c *linuxContainer) Checkpoint(criuOpts *CriuOpts) error {
 
 	// Write the FD info to a file in the image directory
 
-	timeEnd = time.Now()
+	timeEnd := time.Now()
 	fmt.Println("container_linux checkpoint time  until Marshal is ", timeEnd.Sub(timeStart), "\n")
 
 	fdsJSON, err := json.Marshal(c.initProcess.externalDescriptors())
@@ -667,7 +667,7 @@ func (c *linuxContainer) Checkpoint(criuOpts *CriuOpts) error {
 	fmt.Println("container_linux checkpoint time  until criuSwrk is ", timeEnd.Sub(timeStart), "\n")
 
 	err = c.criuSwrk(nil, req, criuOpts, false)
-	timeEnd := time.Now()
+	timeEnd = time.Now()
 	fmt.Println("container_linux checkpoint time is ", timeEnd.Sub(timeStart), "\n")
 	if err != nil {
 		return err
