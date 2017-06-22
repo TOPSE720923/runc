@@ -861,8 +861,24 @@ func (c *linuxContainer) criuSwrk(process *Process, req *criurpc.CriuReq, opts *
 	logPath := filepath.Join(opts.WorkDirectory, req.GetOpts().GetLogFile())
 	criuClient := os.NewFile(uintptr(fds[0]), "criu-transport-client")
 	criuServer := os.NewFile(uintptr(fds[1]), "criu-transport-server")
-	defer criuClient.Close()
-	defer criuServer.Close()
+	defer func() {
+		//	criuClient.Close()
+		timeStart_02 := time.Now()
+		criuClient.Close()
+		timeEnd_02 := time.Now()
+		fmt.Println("defer criuSwrk time 01 is ", timeEnd_02.Sub(timeStart_02), "\n")
+		fmt.Println("defer criuSwrk timeStamp 01 is ", timeEnd_02, "\n")
+	}()
+	//	defer criuServer.Close()
+
+	defer func() {
+
+		timeStart_03 := time.Now()
+		criuServer.Close()
+		timeEnd_03 := time.Now()
+		fmt.Println("defer criuSwrk time 02 is ", timeEnd_03.Sub(timeStart_03), "\n")
+		fmt.Println("defer criuSwrk timeStamp 02 is ", timeEnd_03, "\n")
+	}()
 
 	args := []string{"swrk", "3"}
 	logrus.Debugf("Using CRIU %d at: %s", c.criuVersion, c.criuPath)
@@ -884,8 +900,15 @@ func (c *linuxContainer) criuSwrk(process *Process, req *criurpc.CriuReq, opts *
 	criuServer.Close()
 
 	defer func() {
+		timeStart_01 := time.Now()
 		criuClient.Close()
+		timeEnd_01 := time.Now()
+		fmt.Println("defer criuSwrk time 03 is ", timeEnd_01.Sub(timeStart_01), "\n")
+		fmt.Println("defer criuSwrk timeStamp 03 is ", timeEnd_01, "\n")
 		_, err := cmd.Process.Wait()
+		timeEnd_01 = time.Now()
+		fmt.Println("defer criuSwrk time 04 is ", timeEnd_01.Sub(timeStart_01), "\n")
+		fmt.Println("defer criuSwrk timeStamp 04 is ", timeEnd_01, "\n")
 		if err != nil {
 			return
 		}
