@@ -669,6 +669,7 @@ func (c *linuxContainer) Checkpoint(criuOpts *CriuOpts) error {
 	err = c.criuSwrk(nil, req, criuOpts, false)
 	timeEnd = time.Now()
 	fmt.Println("container_linux checkpoint time is ", timeEnd.Sub(timeStart), "\n")
+	fmt.Println("container_linux checkpoint timeStamp is ", timeEnd, "\n")
 	if err != nil {
 		return err
 	}
@@ -990,6 +991,7 @@ func (c *linuxContainer) criuSwrk(process *Process, req *criurpc.CriuReq, opts *
 	}
 	timeEnd = time.Now()
 	fmt.Println("criuSwrk time 02 is ", timeEnd.Sub(timeStart), "\n")
+	fmt.Println("criuSwrk time 02 Stamp is ", timeEnd, "\n")
 	return nil
 }
 
