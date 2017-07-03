@@ -901,11 +901,11 @@ func (c *linuxContainer) criuSwrk(process *Process, req *criurpc.CriuReq, opts *
 
 	defer func() {
 		timeStart_01 := time.Now()
-		criuClient.Close()
+		//		criuClient.Close()
 		timeEnd_01 := time.Now()
 		fmt.Println("defer criuSwrk time 03 is ", timeEnd_01.Sub(timeStart_01), "\n")
 		fmt.Println("defer criuSwrk timeStamp 03 is ", timeEnd_01, "\n")
-		_, err := cmd.Process.Wait()
+		//		_, err := cmd.Process.Wait()
 		timeEnd_01 = time.Now()
 		fmt.Println("defer criuSwrk time 04 is ", timeEnd_01.Sub(timeStart_01), "\n")
 		fmt.Println("defer criuSwrk timeStamp 04 is ", timeEnd_01, "\n")
@@ -1015,6 +1015,19 @@ func (c *linuxContainer) criuSwrk(process *Process, req *criurpc.CriuReq, opts *
 	timeEnd = time.Now()
 	fmt.Println("criuSwrk time 02 is ", timeEnd.Sub(timeStart), "\n")
 	fmt.Println("criuSwrk time 02 Stamp is ", timeEnd, "\n")
+
+	criuClient.Close()
+
+	timeEnd = time.Now()
+	fmt.Println("criuSwrk time 03 is ", timeEnd.Sub(timeStart), "\n")
+	fmt.Println("criuSwrk time 03 Stamp is ", timeEnd, "\n")
+
+	_, err = cmd.Process.Wait()
+
+	timeEnd = time.Now()
+	fmt.Println("criuSwrk time 04 is ", timeEnd.Sub(timeStart), "\n")
+	fmt.Println("criuSwrk time 04 Stamp is ", timeEnd, "\n")
+
 	return nil
 }
 
